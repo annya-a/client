@@ -4,14 +4,29 @@ namespace OpenAI\Responses\Meta;
 
 final class MetaInformationOpenAI
 {
-    public function __construct(
-        public readonly ?string $model,
-        public readonly ?string $organization,
-        public readonly ?string $version,
-        public readonly int $processingMs,
-    ) {
+    /**
+     * @readonly
+     */
+    public ?string $model;
+    /**
+     * @readonly
+     */
+    public ?string $organization;
+    /**
+     * @readonly
+     */
+    public ?string $version;
+    /**
+     * @readonly
+     */
+    public int $processingMs;
+    public function __construct(?string $model, ?string $organization, ?string $version, int $processingMs)
+    {
+        $this->model = $model;
+        $this->organization = $organization;
+        $this->version = $version;
+        $this->processingMs = $processingMs;
     }
-
     /**
      * @param  array{model: ?string, organization: ?string, version: ?string, processingMs: int}  $attributes
      */

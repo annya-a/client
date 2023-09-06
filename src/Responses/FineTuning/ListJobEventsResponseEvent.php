@@ -14,19 +14,47 @@ use OpenAI\Responses\Concerns\ArrayAccessible;
 final class ListJobEventsResponseEvent implements ResponseContract
 {
     /**
+     * @readonly
+     */
+    public string $object;
+    /**
+     * @readonly
+     */
+    public string $id;
+    /**
+     * @readonly
+     */
+    public int $createdAt;
+    /**
+     * @readonly
+     */
+    public FineTuningEventLevel $level;
+    /**
+     * @readonly
+     */
+    public string $message;
+    /**
+     * @readonly
+     */
+    public ?ListJobEventsResponseEventData $data;
+    /**
+     * @readonly
+     */
+    public string $type;
+    /**
      * @use ArrayAccessible<array{object: string, id: string, created_at: int, level: string, message: string, data: array{step: int, train_loss: float, train_mean_token_accuracy: float}|null, type: string}>
      */
     use ArrayAccessible;
 
-    private function __construct(
-        public readonly string $object,
-        public readonly string $id,
-        public readonly int $createdAt,
-        public readonly FineTuningEventLevel $level,
-        public readonly string $message,
-        public readonly ?ListJobEventsResponseEventData $data,
-        public readonly string $type,
-    ) {
+    private function __construct(string $object, string $id, int $createdAt, FineTuningEventLevel $level, string $message, ?ListJobEventsResponseEventData $data, string $type)
+    {
+        $this->object = $object;
+        $this->id = $id;
+        $this->createdAt = $createdAt;
+        $this->level = $level;
+        $this->message = $message;
+        $this->data = $data;
+        $this->type = $type;
     }
 
     /**
@@ -58,7 +86,7 @@ final class ListJobEventsResponseEvent implements ResponseContract
             'created_at' => $this->createdAt,
             'level' => $this->level->value,
             'message' => $this->message,
-            'data' => $this->data?->toArray(),
+            'data' => ($nullsafeVariable1 = $this->data) ? $nullsafeVariable1->toArray() : null,
             'type' => $this->type,
         ];
     }

@@ -17,6 +17,63 @@ use OpenAI\Testing\Responses\Concerns\Fakeable;
 final class RetrieveJobResponse implements ResponseContract, ResponseHasMetaInformationContract
 {
     /**
+     * @readonly
+     */
+    public string $id;
+    /**
+     * @readonly
+     */
+    public string $object;
+    /**
+     * @readonly
+     */
+    public string $model;
+    /**
+     * @readonly
+     */
+    public int $createdAt;
+    /**
+     * @readonly
+     */
+    public ?int $finishedAt;
+    /**
+     * @readonly
+     */
+    public ?string $fineTunedModel;
+    /**
+     * @readonly
+     */
+    public RetrieveJobResponseHyperparameters $hyperparameters;
+    /**
+     * @readonly
+     */
+    public string $organizationId;
+    /**
+     * @var array<int, string>
+     * @readonly
+     */
+    public array $resultFiles;
+    /**
+     * @readonly
+     */
+    public string $status;
+    /**
+     * @readonly
+     */
+    public ?string $validationFile;
+    /**
+     * @readonly
+     */
+    public string $trainingFile;
+    /**
+     * @readonly
+     */
+    public ?int $trainedTokens;
+    /**
+     * @readonly
+     */
+    private MetaInformation $meta;
+    /**
      * @use ArrayAccessible<array{id: string, object: string, model: string, created_at: int, finished_at: ?int, fine_tuned_model: ?string, hyperparameters: array{n_epochs: int}, organization_id: string, result_files: array<int, string>, status: string, validation_file: ?string, training_file: string, trained_tokens: ?int}>
      */
     use ArrayAccessible;
@@ -27,22 +84,22 @@ final class RetrieveJobResponse implements ResponseContract, ResponseHasMetaInfo
     /**
      * @param  array<int, string>  $resultFiles
      */
-    private function __construct(
-        public readonly string $id,
-        public readonly string $object,
-        public readonly string $model,
-        public readonly int $createdAt,
-        public readonly ?int $finishedAt,
-        public readonly ?string $fineTunedModel,
-        public readonly RetrieveJobResponseHyperparameters $hyperparameters,
-        public readonly string $organizationId,
-        public readonly array $resultFiles,
-        public readonly string $status,
-        public readonly ?string $validationFile,
-        public readonly string $trainingFile,
-        public readonly ?int $trainedTokens,
-        private readonly MetaInformation $meta,
-    ) {
+    private function __construct(string $id, string $object, string $model, int $createdAt, ?int $finishedAt, ?string $fineTunedModel, RetrieveJobResponseHyperparameters $hyperparameters, string $organizationId, array $resultFiles, string $status, ?string $validationFile, string $trainingFile, ?int $trainedTokens, MetaInformation $meta)
+    {
+        $this->id = $id;
+        $this->object = $object;
+        $this->model = $model;
+        $this->createdAt = $createdAt;
+        $this->finishedAt = $finishedAt;
+        $this->fineTunedModel = $fineTunedModel;
+        $this->hyperparameters = $hyperparameters;
+        $this->organizationId = $organizationId;
+        $this->resultFiles = $resultFiles;
+        $this->status = $status;
+        $this->validationFile = $validationFile;
+        $this->trainingFile = $trainingFile;
+        $this->trainedTokens = $trainedTokens;
+        $this->meta = $meta;
     }
 
     /**

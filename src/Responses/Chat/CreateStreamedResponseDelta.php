@@ -6,13 +6,24 @@ namespace OpenAI\Responses\Chat;
 
 final class CreateStreamedResponseDelta
 {
-    private function __construct(
-        public readonly ?string $role,
-        public readonly ?string $content,
-        public readonly ?CreateStreamedResponseFunctionCall $functionCall,
-    ) {
+    /**
+     * @readonly
+     */
+    public ?string $role;
+    /**
+     * @readonly
+     */
+    public ?string $content;
+    /**
+     * @readonly
+     */
+    public ?CreateStreamedResponseFunctionCall $functionCall;
+    private function __construct(?string $role, ?string $content, ?CreateStreamedResponseFunctionCall $functionCall)
+    {
+        $this->role = $role;
+        $this->content = $content;
+        $this->functionCall = $functionCall;
     }
-
     /**
      * @param  array{role?: string, content?: string, function_call?: array{name?: ?string, arguments?: ?string}}  $attributes
      */

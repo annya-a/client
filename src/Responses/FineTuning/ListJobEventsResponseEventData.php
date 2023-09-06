@@ -13,15 +13,27 @@ use OpenAI\Responses\Concerns\ArrayAccessible;
 final class ListJobEventsResponseEventData implements ResponseContract
 {
     /**
+     * @readonly
+     */
+    public int $step;
+    /**
+     * @readonly
+     */
+    public float $trainLoss;
+    /**
+     * @readonly
+     */
+    public float $trainMeanTokenAccuracy;
+    /**
      * @use ArrayAccessible<array{step: int, train_loss: float, train_mean_token_accuracy: float}>
      */
     use ArrayAccessible;
 
-    private function __construct(
-        public readonly int $step,
-        public readonly float $trainLoss,
-        public readonly float $trainMeanTokenAccuracy,
-    ) {
+    private function __construct(int $step, float $trainLoss, float $trainMeanTokenAccuracy)
+    {
+        $this->step = $step;
+        $this->trainLoss = $trainLoss;
+        $this->trainMeanTokenAccuracy = $trainMeanTokenAccuracy;
     }
 
     /**

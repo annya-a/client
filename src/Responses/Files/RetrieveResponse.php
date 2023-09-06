@@ -17,6 +17,43 @@ use OpenAI\Testing\Responses\Concerns\Fakeable;
 final class RetrieveResponse implements ResponseContract, ResponseHasMetaInformationContract
 {
     /**
+     * @readonly
+     */
+    public string $id;
+    /**
+     * @readonly
+     */
+    public string $object;
+    /**
+     * @readonly
+     */
+    public int $bytes;
+    /**
+     * @readonly
+     */
+    public int $createdAt;
+    /**
+     * @readonly
+     */
+    public string $filename;
+    /**
+     * @readonly
+     */
+    public string $purpose;
+    /**
+     * @readonly
+     */
+    public string $status;
+    /**
+     * @var array<array-key, mixed>|null
+     * @readonly
+     */
+    public $statusDetails;
+    /**
+     * @readonly
+     */
+    private MetaInformation $meta;
+    /**
      * @use ArrayAccessible<array{id: string, object: string, created_at: int, bytes: int, filename: string, purpose: string, status: string, status_details: array<array-key, mixed>|string|null}>
      */
     use ArrayAccessible;
@@ -27,17 +64,17 @@ final class RetrieveResponse implements ResponseContract, ResponseHasMetaInforma
     /**
      * @param  array<array-key, mixed>|null  $statusDetails
      */
-    private function __construct(
-        public readonly string $id,
-        public readonly string $object,
-        public readonly int $bytes,
-        public readonly int $createdAt,
-        public readonly string $filename,
-        public readonly string $purpose,
-        public readonly string $status,
-        public readonly array|string|null $statusDetails,
-        private readonly MetaInformation $meta,
-    ) {
+    private function __construct(string $id, string $object, int $bytes, int $createdAt, string $filename, string $purpose, string $status, $statusDetails, MetaInformation $meta)
+    {
+        $this->id = $id;
+        $this->object = $object;
+        $this->bytes = $bytes;
+        $this->createdAt = $createdAt;
+        $this->filename = $filename;
+        $this->purpose = $purpose;
+        $this->status = $status;
+        $this->statusDetails = $statusDetails;
+        $this->meta = $meta;
     }
 
     /**

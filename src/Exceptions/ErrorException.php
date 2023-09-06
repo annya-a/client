@@ -9,12 +9,18 @@ use Exception;
 final class ErrorException extends Exception
 {
     /**
+     * @var array{message: (string | array<int, string>), type: ?string, code: ?string}
+     * @readonly
+     */
+    private array $contents;
+    /**
      * Creates a new Exception instance.
      *
      * @param  array{message: string|array<int, string>, type: ?string, code: ?string}  $contents
      */
-    public function __construct(private readonly array $contents)
+    public function __construct(array $contents)
     {
+        $this->contents = $contents;
         $message = ($contents['message'] ?: $this->contents['code']) ?: 'Unknown error';
 
         if (is_array($message)) {

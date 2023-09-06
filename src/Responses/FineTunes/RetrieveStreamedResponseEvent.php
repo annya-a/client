@@ -14,18 +14,34 @@ use OpenAI\Testing\Responses\Concerns\FakeableForStreamedResponse;
 final class RetrieveStreamedResponseEvent implements ResponseContract
 {
     /**
+     * @readonly
+     */
+    public string $object;
+    /**
+     * @readonly
+     */
+    public int $createdAt;
+    /**
+     * @readonly
+     */
+    public string $level;
+    /**
+     * @readonly
+     */
+    public string $message;
+    /**
      * @use ArrayAccessible<array{object: string, created_at: int, level: string, message: string}>
      */
     use ArrayAccessible;
 
     use FakeableForStreamedResponse;
 
-    private function __construct(
-        public readonly string $object,
-        public readonly int $createdAt,
-        public readonly string $level,
-        public readonly string $message,
-    ) {
+    private function __construct(string $object, int $createdAt, string $level, string $message)
+    {
+        $this->object = $object;
+        $this->createdAt = $createdAt;
+        $this->level = $level;
+        $this->message = $message;
     }
 
     /**

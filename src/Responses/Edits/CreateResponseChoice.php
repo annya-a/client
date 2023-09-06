@@ -6,12 +6,19 @@ namespace OpenAI\Responses\Edits;
 
 final class CreateResponseChoice
 {
-    private function __construct(
-        public readonly string $text,
-        public readonly int $index,
-    ) {
+    /**
+     * @readonly
+     */
+    public string $text;
+    /**
+     * @readonly
+     */
+    public int $index;
+    private function __construct(string $text, int $index)
+    {
+        $this->text = $text;
+        $this->index = $index;
     }
-
     /**
      * @param  array{text: string, index: int}  $attributes
      */

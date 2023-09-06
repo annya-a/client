@@ -10,17 +10,30 @@ use OpenAI\Responses\Concerns\ArrayAccessible;
  */
 final class MetaInformation implements MetaInformationContract
 {
+    public string $requestId;
+    /**
+     * @readonly
+     */
+    public MetaInformationOpenAI $openai;
+    /**
+     * @readonly
+     */
+    public ?MetaInformationRateLimit $requestLimit;
+    /**
+     * @readonly
+     */
+    public ?MetaInformationRateLimit $tokenLimit;
     /**
      * @use ArrayAccessible<array{x-request-id: string, openai-model?: string, openai-organization?: string, openai-processing-ms: int, openai-version?: string, x-ratelimit-limit-requests?: int, x-ratelimit-limit-tokens?: int, x-ratelimit-remaining-requests?: int, x-ratelimit-remaining-tokens?: int, x-ratelimit-reset-requests?: string, x-ratelimit-reset-tokens?: string, x-request-id: string}>
      */
     use ArrayAccessible;
 
-    private function __construct(
-        public string $requestId,
-        public readonly MetaInformationOpenAI $openai,
-        public readonly ?MetaInformationRateLimit $requestLimit,
-        public readonly ?MetaInformationRateLimit $tokenLimit,
-    ) {
+    private function __construct(string $requestId, MetaInformationOpenAI $openai, ?MetaInformationRateLimit $requestLimit, ?MetaInformationRateLimit $tokenLimit)
+    {
+        $this->requestId = $requestId;
+        $this->openai = $openai;
+        $this->requestLimit = $requestLimit;
+        $this->tokenLimit = $tokenLimit;
     }
 
     /**
@@ -82,6 +95,6 @@ final class MetaInformation implements MetaInformationContract
             'x-ratelimit-reset-requests' => $this->requestLimit->reset ?? null,
             'x-ratelimit-reset-tokens' => $this->tokenLimit->reset ?? null,
             'x-request-id' => $this->requestId,
-        ], fn (string|int|null $value): bool => ! is_null($value));
+        ], fn ($value): bool => ! is_null($value));
     }
 }

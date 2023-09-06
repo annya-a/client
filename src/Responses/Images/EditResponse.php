@@ -17,6 +17,19 @@ use OpenAI\Testing\Responses\Concerns\Fakeable;
 final class EditResponse implements ResponseContract, ResponseHasMetaInformationContract
 {
     /**
+     * @readonly
+     */
+    public int $created;
+    /**
+     * @var array<int, EditResponseData>
+     * @readonly
+     */
+    public array $data;
+    /**
+     * @readonly
+     */
+    private MetaInformation $meta;
+    /**
      * @use ArrayAccessible<array{created: int, data: array<int, array{url?: string, b64_json?: string}>}>
      */
     use ArrayAccessible;
@@ -27,11 +40,11 @@ final class EditResponse implements ResponseContract, ResponseHasMetaInformation
     /**
      * @param  array<int, EditResponseData>  $data
      */
-    private function __construct(
-        public readonly int $created,
-        public readonly array $data,
-        private readonly MetaInformation $meta,
-    ) {
+    private function __construct(int $created, array $data, MetaInformation $meta)
+    {
+        $this->created = $created;
+        $this->data = $data;
+        $this->meta = $meta;
     }
 
     /**

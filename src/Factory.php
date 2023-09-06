@@ -178,7 +178,7 @@ final class Factory
             return fn (RequestInterface $request): ResponseInterface => $client->sendRequest($request); // @phpstan-ignore-line
         }
 
-        return function (RequestInterface $_): never {
+        return function (RequestInterface $_) {
             throw new Exception('To use stream requests you must provide an stream handler closure via the OpenAI factory.');
         };
     }

@@ -17,6 +17,31 @@ use OpenAI\Testing\Responses\Concerns\Fakeable;
 final class TranscriptionResponse implements ResponseContract, ResponseHasMetaInformationContract
 {
     /**
+     * @readonly
+     */
+    public ?string $task;
+    /**
+     * @readonly
+     */
+    public ?string $language;
+    /**
+     * @readonly
+     */
+    public ?float $duration;
+    /**
+     * @var array<int, TranscriptionResponseSegment>
+     * @readonly
+     */
+    public array $segments;
+    /**
+     * @readonly
+     */
+    public string $text;
+    /**
+     * @readonly
+     */
+    private MetaInformation $meta;
+    /**
      * @use ArrayAccessible<array{task: ?string, language: ?string, duration: ?float, segments: array<int, array{id: int, seek: int, start: float, end: float, text: string, tokens: array<int, int>, temperature: float, avg_logprob: float, compression_ratio: float, no_speech_prob: float, transient: bool}>, text: string}>
      */
     use ArrayAccessible;
@@ -27,14 +52,14 @@ final class TranscriptionResponse implements ResponseContract, ResponseHasMetaIn
     /**
      * @param  array<int, TranscriptionResponseSegment>  $segments
      */
-    private function __construct(
-        public readonly ?string $task,
-        public readonly ?string $language,
-        public readonly ?float $duration,
-        public readonly array $segments,
-        public readonly string $text,
-        private readonly MetaInformation $meta,
-    ) {
+    private function __construct(?string $task, ?string $language, ?float $duration, array $segments, string $text, MetaInformation $meta)
+    {
+        $this->task = $task;
+        $this->language = $language;
+        $this->duration = $duration;
+        $this->segments = $segments;
+        $this->text = $text;
+        $this->meta = $meta;
     }
 
     /**
@@ -42,7 +67,7 @@ final class TranscriptionResponse implements ResponseContract, ResponseHasMetaIn
      *
      * @param  array{task: ?string, language: ?string, duration: ?float, segments: array<int, array{id: int, seek: int, start: float, end: float, text: string, tokens: array<int, int>, temperature: float, avg_logprob: float, compression_ratio: float, no_speech_prob: float, transient: bool}>, text: string}|string  $attributes
      */
-    public static function from(array|string $attributes, MetaInformation $meta): self
+    public static function from($attributes, MetaInformation $meta): self
     {
         if (is_string($attributes)) {
             $attributes = ['text' => $attributes];

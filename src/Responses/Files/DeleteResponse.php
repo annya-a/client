@@ -17,6 +17,22 @@ use OpenAI\Testing\Responses\Concerns\Fakeable;
 final class DeleteResponse implements ResponseContract, ResponseHasMetaInformationContract
 {
     /**
+     * @readonly
+     */
+    public string $id;
+    /**
+     * @readonly
+     */
+    public string $object;
+    /**
+     * @readonly
+     */
+    public bool $deleted;
+    /**
+     * @readonly
+     */
+    private MetaInformation $meta;
+    /**
      * @use ArrayAccessible<array{id: string, object: string, deleted: bool}>
      */
     use ArrayAccessible;
@@ -24,12 +40,12 @@ final class DeleteResponse implements ResponseContract, ResponseHasMetaInformati
     use Fakeable;
     use HasMetaInformation;
 
-    private function __construct(
-        public readonly string $id,
-        public readonly string $object,
-        public readonly bool $deleted,
-        private readonly MetaInformation $meta,
-    ) {
+    private function __construct(string $id, string $object, bool $deleted, MetaInformation $meta)
+    {
+        $this->id = $id;
+        $this->object = $object;
+        $this->deleted = $deleted;
+        $this->meta = $meta;
     }
 
     /**

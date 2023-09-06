@@ -14,6 +14,27 @@ use OpenAI\Testing\Responses\Concerns\FakeableForStreamedResponse;
 final class CreateStreamedResponse implements ResponseContract
 {
     /**
+     * @readonly
+     */
+    public string $id;
+    /**
+     * @readonly
+     */
+    public string $object;
+    /**
+     * @readonly
+     */
+    public int $created;
+    /**
+     * @readonly
+     */
+    public string $model;
+    /**
+     * @var array<int, CreateStreamedResponseChoice>
+     * @readonly
+     */
+    public array $choices;
+    /**
      * @use ArrayAccessible<array{id: string, object: string, created: int, model: string, choices: array<int, array{index: int, delta: array{role?: string, content?: string}|array{role?: string, content: null, function_call: array{name?: string, arguments?: string}}, finish_reason: string|null}>}>
      */
     use ArrayAccessible;
@@ -23,13 +44,13 @@ final class CreateStreamedResponse implements ResponseContract
     /**
      * @param  array<int, CreateStreamedResponseChoice>  $choices
      */
-    private function __construct(
-        public readonly string $id,
-        public readonly string $object,
-        public readonly int $created,
-        public readonly string $model,
-        public readonly array $choices,
-    ) {
+    private function __construct(string $id, string $object, int $created, string $model, array $choices)
+    {
+        $this->id = $id;
+        $this->object = $object;
+        $this->created = $created;
+        $this->model = $model;
+        $this->choices = $choices;
     }
 
     /**

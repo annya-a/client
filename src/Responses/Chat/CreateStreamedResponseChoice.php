@@ -6,13 +6,24 @@ namespace OpenAI\Responses\Chat;
 
 final class CreateStreamedResponseChoice
 {
-    private function __construct(
-        public readonly int $index,
-        public readonly CreateStreamedResponseDelta $delta,
-        public readonly ?string $finishReason,
-    ) {
+    /**
+     * @readonly
+     */
+    public int $index;
+    /**
+     * @readonly
+     */
+    public CreateStreamedResponseDelta $delta;
+    /**
+     * @readonly
+     */
+    public ?string $finishReason;
+    private function __construct(int $index, CreateStreamedResponseDelta $delta, ?string $finishReason)
+    {
+        $this->index = $index;
+        $this->delta = $delta;
+        $this->finishReason = $finishReason;
     }
-
     /**
      * @param  array{index: int, delta: array{role?: string, content?: string}, finish_reason: string|null}  $attributes
      */

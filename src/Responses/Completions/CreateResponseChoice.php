@@ -6,14 +6,29 @@ namespace OpenAI\Responses\Completions;
 
 final class CreateResponseChoice
 {
-    private function __construct(
-        public readonly string $text,
-        public readonly int $index,
-        public readonly ?CreateResponseChoiceLogprobs $logprobs,
-        public readonly ?string $finishReason,
-    ) {
+    /**
+     * @readonly
+     */
+    public string $text;
+    /**
+     * @readonly
+     */
+    public int $index;
+    /**
+     * @readonly
+     */
+    public ?CreateResponseChoiceLogprobs $logprobs;
+    /**
+     * @readonly
+     */
+    public ?string $finishReason;
+    private function __construct(string $text, int $index, ?CreateResponseChoiceLogprobs $logprobs, ?string $finishReason)
+    {
+        $this->text = $text;
+        $this->index = $index;
+        $this->logprobs = $logprobs;
+        $this->finishReason = $finishReason;
     }
-
     /**
      * @param  array{text: string, index: int, logprobs: array{tokens: array<int, string>, token_logprobs: array<int, float>, top_logprobs: array<int, string>|null, text_offset: array<int, int>}|null, finish_reason: string|null}  $attributes
      */

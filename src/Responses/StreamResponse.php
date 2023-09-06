@@ -18,17 +18,25 @@ use Psr\Http\Message\StreamInterface;
 final class StreamResponse implements IteratorAggregate, ResponseHasMetaInformationContract
 {
     /**
+     * @var class-string<TResponse>
+     * @readonly
+     */
+    private string $responseClass;
+    /**
+     * @readonly
+     */
+    private ResponseInterface $response;
+    /**
      * Creates a new Stream Response instance.
      *
      * @param  class-string<TResponse>  $responseClass
      */
-    public function __construct(
-        private readonly string $responseClass,
-        private readonly ResponseInterface $response,
-    ) {
+    public function __construct(string $responseClass, ResponseInterface $response)
+    {
+        $this->responseClass = $responseClass;
+        $this->response = $response;
         //
     }
-
     /**
      * {@inheritDoc}
      */
@@ -37,7 +45,7 @@ final class StreamResponse implements IteratorAggregate, ResponseHasMetaInformat
         while (! $this->response->getBody()->eof()) {
             $line = $this->readLine($this->response->getBody());
 
-            if (! str_starts_with($line, 'data:')) {
+            if (strncmp($line, 'data:', strlen('data:')) !== 0) {
                 continue;
             }
 

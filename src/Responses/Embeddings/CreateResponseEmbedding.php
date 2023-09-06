@@ -7,15 +7,27 @@ namespace OpenAI\Responses\Embeddings;
 final class CreateResponseEmbedding
 {
     /**
+     * @readonly
+     */
+    public string $object;
+    /**
+     * @readonly
+     */
+    public int $index;
+    /**
+     * @var array<int, float>
+     * @readonly
+     */
+    public array $embedding;
+    /**
      * @param  array<int, float>  $embedding
      */
-    private function __construct(
-        public readonly string $object,
-        public readonly int $index,
-        public readonly array $embedding,
-    ) {
+    private function __construct(string $object, int $index, array $embedding)
+    {
+        $this->object = $object;
+        $this->index = $index;
+        $this->embedding = $embedding;
     }
-
     /**
      * @param  array{object: string, index: int, embedding: array<int, float>}  $attributes
      */

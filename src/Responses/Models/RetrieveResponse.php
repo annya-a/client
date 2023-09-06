@@ -17,6 +17,39 @@ use OpenAI\Testing\Responses\Concerns\Fakeable;
 final class RetrieveResponse implements ResponseContract, ResponseHasMetaInformationContract
 {
     /**
+     * @readonly
+     */
+    public string $id;
+    /**
+     * @readonly
+     */
+    public string $object;
+    /**
+     * @readonly
+     */
+    public int $created;
+    /**
+     * @readonly
+     */
+    public string $ownedBy;
+    /**
+     * @var array<int, RetrieveResponsePermission>
+     * @readonly
+     */
+    public array $permission;
+    /**
+     * @readonly
+     */
+    public string $root;
+    /**
+     * @readonly
+     */
+    public ?string $parent;
+    /**
+     * @readonly
+     */
+    private MetaInformation $meta;
+    /**
      * @use ArrayAccessible<array{id: string, object: string, created: int, owned_by: string, permission: array<int, array{id: string, object: string, created: int, allow_create_engine: bool, allow_sampling: bool, allow_logprobs: bool, allow_search_indices: bool, allow_view: bool, allow_fine_tuning: bool, organization: string, group: ?string, is_blocking: bool}>, root: string, parent: ?string}>
      */
     use ArrayAccessible;
@@ -27,16 +60,16 @@ final class RetrieveResponse implements ResponseContract, ResponseHasMetaInforma
     /**
      * @param  array<int, RetrieveResponsePermission>  $permission
      */
-    private function __construct(
-        public readonly string $id,
-        public readonly string $object,
-        public readonly int $created,
-        public readonly string $ownedBy,
-        public readonly array $permission,
-        public readonly string $root,
-        public readonly ?string $parent,
-        private readonly MetaInformation $meta,
-    ) {
+    private function __construct(string $id, string $object, int $created, string $ownedBy, array $permission, string $root, ?string $parent, MetaInformation $meta)
+    {
+        $this->id = $id;
+        $this->object = $object;
+        $this->created = $created;
+        $this->ownedBy = $ownedBy;
+        $this->permission = $permission;
+        $this->root = $root;
+        $this->parent = $parent;
+        $this->meta = $meta;
     }
 
     /**

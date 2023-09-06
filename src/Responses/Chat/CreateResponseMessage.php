@@ -6,13 +6,24 @@ namespace OpenAI\Responses\Chat;
 
 final class CreateResponseMessage
 {
-    private function __construct(
-        public readonly string $role,
-        public readonly ?string $content,
-        public readonly ?CreateResponseFunctionCall $functionCall,
-    ) {
+    /**
+     * @readonly
+     */
+    public string $role;
+    /**
+     * @readonly
+     */
+    public ?string $content;
+    /**
+     * @readonly
+     */
+    public ?CreateResponseFunctionCall $functionCall;
+    private function __construct(string $role, ?string $content, ?CreateResponseFunctionCall $functionCall)
+    {
+        $this->role = $role;
+        $this->content = $content;
+        $this->functionCall = $functionCall;
     }
-
     /**
      * @param  array{role: string, content: ?string, function_call: ?array{name: string, arguments: string}}  $attributes
      */

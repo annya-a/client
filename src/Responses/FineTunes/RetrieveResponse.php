@@ -17,6 +17,66 @@ use OpenAI\Testing\Responses\Concerns\Fakeable;
 final class RetrieveResponse implements ResponseContract, ResponseHasMetaInformationContract
 {
     /**
+     * @readonly
+     */
+    public string $id;
+    /**
+     * @readonly
+     */
+    public string $object;
+    /**
+     * @readonly
+     */
+    public string $model;
+    /**
+     * @readonly
+     */
+    public int $createdAt;
+    /**
+     * @var array<int, RetrieveResponseEvent>
+     * @readonly
+     */
+    public array $events;
+    /**
+     * @readonly
+     */
+    public ?string $fineTunedModel;
+    /**
+     * @readonly
+     */
+    public RetrieveResponseHyperparams $hyperparams;
+    /**
+     * @readonly
+     */
+    public string $organizationId;
+    /**
+     * @var array<int, RetrieveResponseFile>
+     * @readonly
+     */
+    public array $resultFiles;
+    /**
+     * @readonly
+     */
+    public string $status;
+    /**
+     * @var array<int, RetrieveResponseFile>
+     * @readonly
+     */
+    public array $validationFiles;
+    /**
+     * @var array<int, RetrieveResponseFile>
+     * @readonly
+     */
+    public array $trainingFiles;
+    /**
+     * @readonly
+     */
+    public int $updatedAt;
+    /**
+     * @readonly
+     */
+    private MetaInformation $meta;
+    /**
      * @use ArrayAccessible<array{id: string, object: string, model: string, created_at: int, events: array<int, array{object: string, created_at: int, level: string, message: string}>, fine_tuned_model: ?string, hyperparams: array{batch_size: ?int, learning_rate_multiplier: ?float, n_epochs: int, prompt_loss_weight: float}, organization_id: string, result_files: array<int, array{id: string, object: string, created_at: int, bytes: int, filename: string, purpose: string, status: string, status_details: array<array-key, mixed>|string|null}>, status: string, validation_files: array<int, array{id: string, object: string, created_at: int, bytes: int, filename: string, purpose: string, status: string, status_details: array<array-key, mixed>|string|null}>, training_files: array<int, array{id: string, object: string, created_at: int, bytes: int, filename: string, purpose: string, status: string, status_details: array<array-key, mixed>|string|null}>, updated_at: int}>
      */
     use ArrayAccessible;
@@ -30,22 +90,22 @@ final class RetrieveResponse implements ResponseContract, ResponseHasMetaInforma
      * @param  array<int, RetrieveResponseFile>  $validationFiles
      * @param  array<int, RetrieveResponseFile>  $trainingFiles
      */
-    private function __construct(
-        public readonly string $id,
-        public readonly string $object,
-        public readonly string $model,
-        public readonly int $createdAt,
-        public readonly array $events,
-        public readonly ?string $fineTunedModel,
-        public readonly RetrieveResponseHyperparams $hyperparams,
-        public readonly string $organizationId,
-        public readonly array $resultFiles,
-        public readonly string $status,
-        public readonly array $validationFiles,
-        public readonly array $trainingFiles,
-        public readonly int $updatedAt,
-        private readonly MetaInformation $meta,
-    ) {
+    private function __construct(string $id, string $object, string $model, int $createdAt, array $events, ?string $fineTunedModel, RetrieveResponseHyperparams $hyperparams, string $organizationId, array $resultFiles, string $status, array $validationFiles, array $trainingFiles, int $updatedAt, MetaInformation $meta)
+    {
+        $this->id = $id;
+        $this->object = $object;
+        $this->model = $model;
+        $this->createdAt = $createdAt;
+        $this->events = $events;
+        $this->fineTunedModel = $fineTunedModel;
+        $this->hyperparams = $hyperparams;
+        $this->organizationId = $organizationId;
+        $this->resultFiles = $resultFiles;
+        $this->status = $status;
+        $this->validationFiles = $validationFiles;
+        $this->trainingFiles = $trainingFiles;
+        $this->updatedAt = $updatedAt;
+        $this->meta = $meta;
     }
 
     /**

@@ -12,10 +12,15 @@ use OpenAI\Contracts\StringableContract;
 final class ResourceUri implements StringableContract
 {
     /**
+     * @readonly
+     */
+    private string $uri;
+    /**
      * Creates a new ResourceUri value object.
      */
-    private function __construct(private readonly string $uri)
+    private function __construct(string $uri)
     {
+        $this->uri = $uri;
         // ..
     }
 

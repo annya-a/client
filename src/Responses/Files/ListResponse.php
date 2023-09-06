@@ -17,6 +17,19 @@ use OpenAI\Testing\Responses\Concerns\Fakeable;
 final class ListResponse implements ResponseContract, ResponseHasMetaInformationContract
 {
     /**
+     * @readonly
+     */
+    public string $object;
+    /**
+     * @var array<int, RetrieveResponse>
+     * @readonly
+     */
+    public array $data;
+    /**
+     * @readonly
+     */
+    private MetaInformation $meta;
+    /**
      * @use ArrayAccessible<array{object: string, data: array<int, array{id: string, object: string, created_at: int, bytes: int, filename: string, purpose: string, status: string, status_details: array<array-key, mixed>|string|null}>}>
      */
     use ArrayAccessible;
@@ -27,11 +40,11 @@ final class ListResponse implements ResponseContract, ResponseHasMetaInformation
     /**
      * @param  array<int, RetrieveResponse>  $data
      */
-    private function __construct(
-        public readonly string $object,
-        public readonly array $data,
-        private readonly MetaInformation $meta,
-    ) {
+    private function __construct(string $object, array $data, MetaInformation $meta)
+    {
+        $this->object = $object;
+        $this->data = $data;
+        $this->meta = $meta;
     }
 
     /**

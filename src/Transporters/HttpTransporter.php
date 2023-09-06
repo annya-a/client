@@ -27,18 +27,37 @@ use Psr\Http\Message\ResponseInterface;
 final class HttpTransporter implements TransporterContract
 {
     /**
+     * @readonly
+     */
+    private ClientInterface $client;
+    /**
+     * @readonly
+     */
+    private BaseUri $baseUri;
+    /**
+     * @readonly
+     */
+    private Headers $headers;
+    /**
+     * @readonly
+     */
+    private QueryParams $queryParams;
+    /**
+     * @readonly
+     */
+    private Closure $streamHandler;
+    /**
      * Creates a new Http Transporter instance.
      */
-    public function __construct(
-        private readonly ClientInterface $client,
-        private readonly BaseUri $baseUri,
-        private readonly Headers $headers,
-        private readonly QueryParams $queryParams,
-        private readonly Closure $streamHandler,
-    ) {
+    public function __construct(ClientInterface $client, BaseUri $baseUri, Headers $headers, QueryParams $queryParams, Closure $streamHandler)
+    {
+        $this->client = $client;
+        $this->baseUri = $baseUri;
+        $this->headers = $headers;
+        $this->queryParams = $queryParams;
+        $this->streamHandler = $streamHandler;
         // ..
     }
-
     /**
      * {@inheritDoc}
      */
@@ -50,7 +69,7 @@ final class HttpTransporter implements TransporterContract
 
         $contents = $response->getBody()->getContents();
 
-        if (str_contains($response->getHeaderLine('Content-Type'), ContentType::TEXT_PLAIN->value)) {
+        if (strpos($response->getHeaderLine('Content-Type'), ContentType::TEXT_PLAIN) !== false) {
             return Response::from($contents, $response->getHeaders());
         }
 
@@ -109,13 +128,16 @@ final class HttpTransporter implements TransporterContract
         }
     }
 
-    private function throwIfJsonError(ResponseInterface $response, string|ResponseInterface $contents): void
+    /**
+     * @param string|\Psr\Http\Message\ResponseInterface $contents
+     */
+    private function throwIfJsonError(ResponseInterface $response, $contents): void
     {
         if ($response->getStatusCode() < 400) {
             return;
         }
 
-        if (! str_contains($response->getHeaderLine('Content-Type'), ContentType::JSON->value)) {
+        if (strpos($response->getHeaderLine('Content-Type'), ContentType::JSON) === false) {
             return;
         }
 

@@ -19,19 +19,35 @@ use Psr\Http\Message\StreamInterface;
 final class Payload
 {
     /**
+     * @readonly
+     */
+    private string $contentType;
+    /**
+     * @readonly
+     */
+    private string $method;
+    /**
+     * @readonly
+     */
+    private ResourceUri $uri;
+    /**
+     * @var array<string, mixed>
+     * @readonly
+     */
+    private array $parameters = [];
+    /**
      * Creates a new Request value object.
      *
      * @param  array<string, mixed>  $parameters
      */
-    private function __construct(
-        private readonly ContentType $contentType,
-        private readonly Method $method,
-        private readonly ResourceUri $uri,
-        private readonly array $parameters = [],
-    ) {
+    private function __construct(string $contentType, string $method, ResourceUri $uri, array $parameters = [])
+    {
+        $this->contentType = $contentType;
+        $this->method = $method;
+        $this->uri = $uri;
+        $this->parameters = $parameters;
         // ..
     }
-
     /**
      * Creates a new Payload value object from the given parameters.
      */
@@ -135,7 +151,7 @@ final class Payload
 
         $queryParams = $queryParams->toArray();
         if ($this->method === Method::GET) {
-            $queryParams = [...$queryParams, ...$this->parameters];
+            $queryParams = array_merge($queryParams, $this->parameters);
         }
 
         if ($queryParams !== []) {
@@ -167,7 +183,7 @@ final class Payload
             }
         }
 
-        $request = $psr17Factory->createRequest($this->method->value, $uri);
+        $request = $psr17Factory->createRequest($this->method, $uri);
 
         if ($body instanceof StreamInterface) {
             $request = $request->withBody($body);

@@ -23,6 +23,10 @@ use Throwable;
 class ClientFake implements ClientContract
 {
     /**
+     * @var array<array-key, (ResponseContract | StreamResponse | string)>
+     */
+    protected array $responses = [];
+    /**
      * @var array<array-key, TestRequest>
      */
     private array $requests = [];
@@ -30,8 +34,9 @@ class ClientFake implements ClientContract
     /**
      * @param  array<array-key, ResponseContract|StreamResponse|string>  $responses
      */
-    public function __construct(protected array $responses = [])
+    public function __construct(array $responses = [])
     {
+        $this->responses = $responses;
     }
 
     /**
@@ -39,10 +44,13 @@ class ClientFake implements ClientContract
      */
     public function addResponses(array $responses): void
     {
-        $this->responses = [...$this->responses, ...$responses];
+        $this->responses = array_merge($this->responses, $responses);
     }
 
-    public function assertSent(string $resource, callable|int $callback = null): void
+    /**
+     * @param callable|int $callback
+     */
+    public function assertSent(string $resource, $callback = null): void
     {
         if (is_int($callback)) {
             $this->assertSentTimes($resource, $callback);
@@ -96,8 +104,8 @@ class ClientFake implements ClientContract
     public function assertNothingSent(): void
     {
         $resourceNames = implode(
-            separator: ', ',
-            array: array_map(fn (TestRequest $request): string => $request->resource(), $this->requests)
+            ', ',
+            array_map(fn (TestRequest $request): string => $request->resource(), $this->requests)
         );
 
         PHPUnit::assertEmpty($this->requests, 'The following requests were sent unexpectedly: '.$resourceNames);
@@ -111,7 +119,10 @@ class ClientFake implements ClientContract
         return array_filter($this->requests, fn (TestRequest $request): bool => $request->resource() === $type);
     }
 
-    public function record(TestRequest $request): ResponseContract|StreamResponse|string
+    /**
+     * @return \OpenAI\Contracts\ResponseContract|\OpenAI\Responses\StreamResponse|string
+     */
+    public function record(TestRequest $request)
     {
         $this->requests[] = $request;
 

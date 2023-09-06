@@ -17,6 +17,19 @@ use OpenAI\Testing\Responses\Concerns\Fakeable;
 final class ListJobEventsResponse implements ResponseContract, ResponseHasMetaInformationContract
 {
     /**
+     * @readonly
+     */
+    public string $object;
+    /**
+     * @var array<int, ListJobEventsResponseEvent>
+     * @readonly
+     */
+    public array $data;
+    /**
+     * @readonly
+     */
+    private MetaInformation $meta;
+    /**
      * @use ArrayAccessible<array{object: string, data: array<int, array{object: string, id: string, created_at: int, level: string, message: string, data: array{step: int, train_loss: float, train_mean_token_accuracy: float}|null, type: string}>}>
      */
     use ArrayAccessible;
@@ -27,11 +40,11 @@ final class ListJobEventsResponse implements ResponseContract, ResponseHasMetaIn
     /**
      * @param  array<int, ListJobEventsResponseEvent>  $data
      */
-    private function __construct(
-        public readonly string $object,
-        public readonly array $data,
-        private readonly MetaInformation $meta,
-    ) {
+    private function __construct(string $object, array $data, MetaInformation $meta)
+    {
+        $this->object = $object;
+        $this->data = $data;
+        $this->meta = $meta;
     }
 
     /**

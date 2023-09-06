@@ -13,16 +13,32 @@ use OpenAI\Responses\Concerns\ArrayAccessible;
 final class RetrieveResponseEvent implements ResponseContract
 {
     /**
+     * @readonly
+     */
+    public string $object;
+    /**
+     * @readonly
+     */
+    public int $createdAt;
+    /**
+     * @readonly
+     */
+    public string $level;
+    /**
+     * @readonly
+     */
+    public string $message;
+    /**
      * @use ArrayAccessible<array{object: string, created_at: int, level: string, message: string}>
      */
     use ArrayAccessible;
 
-    private function __construct(
-        public readonly string $object,
-        public readonly int $createdAt,
-        public readonly string $level,
-        public readonly string $message,
-    ) {
+    private function __construct(string $object, int $createdAt, string $level, string $message)
+    {
+        $this->object = $object;
+        $this->createdAt = $createdAt;
+        $this->level = $level;
+        $this->message = $message;
     }
 
     /**

@@ -17,6 +17,23 @@ use OpenAI\Testing\Responses\Concerns\Fakeable;
 final class CreateResponse implements ResponseContract, ResponseHasMetaInformationContract
 {
     /**
+     * @readonly
+     */
+    public string $object;
+    /**
+     * @var array<int, CreateResponseEmbedding>
+     * @readonly
+     */
+    public array $embeddings;
+    /**
+     * @readonly
+     */
+    public CreateResponseUsage $usage;
+    /**
+     * @readonly
+     */
+    private MetaInformation $meta;
+    /**
      * @use ArrayAccessible<array{object: string, data: array<int, array{object: string, embedding: array<int, float>, index: int}>, usage: array{prompt_tokens: int, total_tokens: int}}>
      */
     use ArrayAccessible;
@@ -27,12 +44,12 @@ final class CreateResponse implements ResponseContract, ResponseHasMetaInformati
     /**
      * @param  array<int, CreateResponseEmbedding>  $embeddings
      */
-    private function __construct(
-        public readonly string $object,
-        public readonly array $embeddings,
-        public readonly CreateResponseUsage $usage,
-        private readonly MetaInformation $meta,
-    ) {
+    private function __construct(string $object, array $embeddings, CreateResponseUsage $usage, MetaInformation $meta)
+    {
+        $this->object = $object;
+        $this->embeddings = $embeddings;
+        $this->usage = $usage;
+        $this->meta = $meta;
     }
 
     /**
